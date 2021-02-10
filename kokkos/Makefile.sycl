@@ -5,9 +5,9 @@
 MPI_PATH = ./MPI-Stubs
 
 #Set the path to Kokkos
-#KOKKOS_PATH = ${HOME}/Kokkos/kokkos
-KOKKOS_PATH = ${HOME}/shared/kokkos/kokkos-3.3.01
-KOKKOSPATH = ${HOME}/shared/kokkos/kokkos-3.3.01
+KOKKOS_PATH = ${HOME}/git/github.com/nliber/kokkos-develop
+KOKKOSPATH = ${KOKKOS_PATH}
+KOKKOSBUILD=${KOKKOSPATH}/build_debug
 #Set the Devices to compile for
 KOKKOS_DEVICES=SYCL
 #Set the Architecture to compiler for
@@ -23,7 +23,9 @@ LIB =
 
 #CXX = ${MPI_PATH}/bin/mpicxx
 CXX = icpx
-CXXFLAGS += -I${MPI_PATH} -ggdb3
+CXXFLAGS += -I${MPI_PATH} -ggdb3 -fsycl -fsycl-unnamed-lambda -fsycl-targets=spir64_gen-unknown-unknown-sycldevice -Xsycl-target-backend "-device skl"
+CXXFLAGS += -DKOKKOS_DEPENDENCE -I${KOKKOSBUILD}/core/src -I${KOKKOSPATH}/core/src -I${KOKKOSBUILD}
+#-DKOKKOS_DEPENDENCE -I/home/nliber/git/github.com/nliber/kokkos-develop/build_debug/core/src -I/home/nliber/git/github.com/nliber/kokkos-develop/core/src -I/home/nliber/git/github.com/nliber/kokkos-develop/build_debug -ggdb3 -g -fsycl -fsycl-unnamed-lambda -std=c++17
 LIB += ${MPI_PATH}/libmpi_stubs.a
 
 #CXXFLAGS += -DTEST_LAMBDA_BYCOPY
@@ -46,7 +48,7 @@ all: $(OBJ) $(KOKKOS_LINK_DEPENDS)
 	$(LINK) $(LINKFLAGS) $(EXTRA_PATH) $(OBJ) $(KOKKOS_LDFLAGS) $(KOKKOS_LIBS) $(LIB) -o $(EXE)
 
 clean: 
-	rm *.o *.d libkokkos.a *.cuda *.host
+	rm -f *.o *.d libkokkos.a *.cuda *.host ${EXE}
 
 EXTRA_FLAGS = $(KOKKOS_CPPFLAGS) $(KOKKOS_CXXFLAGS)
 # Compilation rules

@@ -22,7 +22,7 @@ OBJ = 		$(SRC:.c=.o)
 # System-specific settings
 
 CC =		icpx
-CCFLAGS =	-O -fPIC -ggdb3
+CCFLAGS =	-O -fPIC -ggdb3 -fsycl -fsycl-unnamed-lambda
 ARCHIVE =	ar
 ARCHFLAG =	rs
 
