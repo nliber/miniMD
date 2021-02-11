@@ -8,6 +8,7 @@ MPI_PATH = ./MPI-Stubs
 KOKKOS_PATH = ${HOME}/git/github.com/nliber/kokkos-develop
 KOKKOSPATH = ${KOKKOS_PATH}
 KOKKOSBUILD=${KOKKOSPATH}/build_debug
+KOKKOSLIB=${KOKKOSBUILD}/install/lib64
 #Set the Devices to compile for
 KOKKOS_DEVICES=SYCL
 #Set the Architecture to compiler for
@@ -18,7 +19,7 @@ KOKKOS_CXX_STANDARD=c++17
 
 #CXXFLAGS = -O3 
 CXXFLAGS = -O0 
-LINKFLAGS = 
+LINKFLAGS = -fsycl
 LIB =
 
 #CXX = ${MPI_PATH}/bin/mpicxx
@@ -27,6 +28,8 @@ CXXFLAGS += -I${MPI_PATH} -ggdb3 -fsycl -fsycl-unnamed-lambda -fsycl-targets=spi
 CXXFLAGS += -DKOKKOS_DEPENDENCE -I${KOKKOSBUILD}/core/src -I${KOKKOSPATH}/core/src -I${KOKKOSBUILD}
 #-DKOKKOS_DEPENDENCE -I/home/nliber/git/github.com/nliber/kokkos-develop/build_debug/core/src -I/home/nliber/git/github.com/nliber/kokkos-develop/core/src -I/home/nliber/git/github.com/nliber/kokkos-develop/build_debug -ggdb3 -g -fsycl -fsycl-unnamed-lambda -std=c++17
 LIB += ${MPI_PATH}/libmpi_stubs.a
+LIB += ${KOKKOSLIB}/libkokkoscore.a
+#LIB += ${KOKKOSLIB}/libkokkoscontainers.a
 
 #CXXFLAGS += -DTEST_LAMBDA_BYCOPY
 #CXXFLAGS += -DTEST_LAMBDA_BYPTR
